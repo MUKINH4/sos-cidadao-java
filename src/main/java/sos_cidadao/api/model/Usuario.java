@@ -1,5 +1,6 @@
 package sos_cidadao.api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,10 +18,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotNull
+    @NotNull(message = "O campo email não pode ser nulo")
+    @Column(unique = true)
     private String email;
 
-    @NotNull
-    private String password;
+    @NotNull(message = "O campo senha não pode ser nulo")
+    private String senha;
 
 }
