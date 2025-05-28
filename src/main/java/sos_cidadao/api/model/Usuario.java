@@ -1,28 +1,62 @@
 package sos_cidadao.api.model;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import sos_cidadao.api.model.enums.UserRole;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotNull(message = "O campo email não pode ser nulo")
+    @NotBlank(message = "O campo email não pode ser nulo")
     @Column(unique = true)
     private String email;
 
-    @NotNull(message = "O campo senha não pode ser nulo")
+    @NotBlank(message = "O campo senha não pode ser nulo")
     private String senha;
+
+    @Builder.Default
+    private UserRole role = UserRole.USER;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.toString()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+
 
 }
