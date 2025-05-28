@@ -23,6 +23,13 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+                String path = request.getServletPath();
+            if ("/registrar".equals(path) || "/login".equals(path)) {
+                filterChain.doFilter(request, response);
+                return;
+    }
+
             var header = request.getHeader("Authorization");
             if (header == null) {
                 filterChain.doFilter(request, response);

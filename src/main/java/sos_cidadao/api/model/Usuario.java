@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sos_cidadao.api.model.enums.UserRole;
+import sos_cidadao.api.model.enums.TipoUsuario;
 
 @Entity
 @Data
@@ -32,6 +35,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @NotBlank
+    private String nome;
+
     @NotBlank(message = "O campo email não pode ser nulo")
     @Column(unique = true)
     private String email;
@@ -40,7 +46,11 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
+
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

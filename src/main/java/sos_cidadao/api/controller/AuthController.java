@@ -5,13 +5,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import sos_cidadao.api.model.Usuario;
 import sos_cidadao.api.service.TokenService;
 
+@RestController
+@RequestMapping
 public class AuthController {
     public record Token(String token, String email){}
-    public record Credentials(String email, String password){}
+    public record Credentials(String email, String senha){}
 
     @Autowired
     private TokenService tokenService;
@@ -22,7 +26,7 @@ public class AuthController {
     @PostMapping("/login")
     public Token login(@RequestBody Credentials credentials){
 
-        var authentication = new UsernamePasswordAuthenticationToken(credentials.email(), credentials.password());
+        var authentication = new UsernamePasswordAuthenticationToken(credentials.email(), credentials.senha());
         
         var usuario = (Usuario) authManager.authenticate(authentication).getPrincipal();
 

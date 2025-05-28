@@ -27,7 +27,7 @@ public class SecurityFilter {
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 )
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
@@ -36,7 +36,7 @@ public class SecurityFilter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 

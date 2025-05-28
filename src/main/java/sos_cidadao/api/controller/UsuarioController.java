@@ -1,37 +1,35 @@
 package sos_cidadao.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
+import sos_cidadao.api.dto.UsuarioRequestDTO;
 import sos_cidadao.api.dto.UsuarioResponseDTO;
-import sos_cidadao.api.model.Usuario;
-import sos_cidadao.api.repository.UsuarioRepository;
+import sos_cidadao.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/registrar")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository repository;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UsuarioController(UsuarioService usuarioService){
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public UsuarioResponseDTO criar(@RequestBody @Valid Usuario usuario){
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        var usuarioSalvo = repository.save(usuario);
-        return new UsuarioResponseDTO(usuarioSalvo.getId(), usuarioSalvo.getEmail(), usuarioSalvo.getRole());
+    @Operation(tags = "Usuarios", summary = "Cria um usuário")
+    public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody @Valid UsuarioRequestDTO usuarioRequest){
+        var usuarioResponse = usuarioService.registrarUsuario(usuarioRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResponse);
     }
 
 }
