@@ -1,8 +1,17 @@
 package sos_cidadao.api.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,10 +21,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import sos_cidadao.api.dto.UsuarioRequestDTO;
 import sos_cidadao.api.dto.UsuarioResponseDTO;
+import sos_cidadao.api.model.Usuario;
 import sos_cidadao.api.service.UsuarioService;
 
 @RestController
-@RequestMapping("/registrar")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -24,12 +34,43 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping
+    @PostMapping("/registrar")
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(tags = "Usuarios", summary = "Cria um usuário")
     public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody @Valid UsuarioRequestDTO usuarioRequest){
         var usuarioResponse = usuarioService.registrarUsuario(usuarioRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResponse);
+    }
+
+    @GetMapping
+    @Cacheable("usuarios")
+    @Operation(tags = "Usuarios", summary = "Lista todos os usuários")
+    public ResponseEntity<List<Usuario>> listarTodos() {
+        List<Usuario> usuarios = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/{id}")
+    @Cacheable(value = "usuario", key = "#id")
+    @Operation(tags = "Usuarios", summary = "Busca um usuário pelo ID")
+    public ResponseEntity<Optional<Usuario>> buscarPorId(@PathVariable String id) {
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    @CacheEvict(value = "usuario", key = "#id")
+    @Operation(tags = "Usuarios", summary = "Atualiza um usuário pelo ID")
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
+        Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @DeleteMapping("/{id}")
+    @CacheEvict(value = "usuario", key = "#id")
+    @Operation(tags = "Usuarios", summary = "Deleta um usuário pelo ID")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
+        usuarioService.deletarUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

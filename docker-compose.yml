@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Muk1nha2005!
+      POSTGRES_PASSWORD: S0SCidadao!
       POSTGRES_DB: sos_cidadao
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -25,7 +25,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/sos_cidadao
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Muk1nha2005!
+      SPRING_DATASOURCE_PASSWORD: S0SCidadao!
     depends_on:
       - db
     command: >

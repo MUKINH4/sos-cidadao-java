@@ -33,23 +33,28 @@ public class Usuario implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "usuario_id")
     private String id;
 
-    @NotBlank
+    @NotBlank(message = "O campo nome não pode ser nulo")
+    @Column(name = "nome", nullable = false)
     private String nome;
 
     @NotBlank(message = "O campo email não pode ser nulo")
-    @Column(unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @NotBlank(message = "O campo senha não pode ser nulo")
+    @Column(name = "senha", nullable = false)
     private String senha;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private UserRole role = UserRole.USER;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario", nullable = false)
     private TipoUsuario tipo;
 
     @Override

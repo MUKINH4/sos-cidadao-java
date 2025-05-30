@@ -1,8 +1,12 @@
 package sos_cidadao.api.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import sos_cidadao.api.dto.UsuarioRequestDTO;
 import sos_cidadao.api.dto.UsuarioResponseDTO;
@@ -34,12 +38,20 @@ public class UsuarioService {
             throw new IllegalArgumentException("O objeto UsuarioRequestDTO não pode ser nulo");
         }
 
+        if (usuarioRequestDTO.nome() == null || usuarioRequestDTO.nome().isBlank()) {
+            throw new IllegalArgumentException("O campo nome não pode ser nulo ou vazio");
+        }
+
         if (usuarioRequestDTO.email() == null || usuarioRequestDTO.email().isBlank()) {
             throw new IllegalArgumentException("O campo email não pode ser nulo ou vazio");
         }
 
         if (usuarioRequestDTO.senha() == null || usuarioRequestDTO.senha().isBlank()) {
             throw new IllegalArgumentException("O campo senha não pode ser nulo ou vazio");
+        }
+
+        if (usuarioRequestDTO.confirmarSenha() == null || usuarioRequestDTO.confirmarSenha().isBlank()) {
+            throw new IllegalArgumentException("O campo confirmar senha não pode ser nulo ou vazio");
         }
 
         if (!usuarioRequestDTO.senha().equals(usuarioRequestDTO.confirmarSenha())) {
@@ -80,4 +92,23 @@ public class UsuarioService {
         }
     }
 
+    public List<Usuario> listarUsuarios(){
+        return usuarioRepository.findAll();
+    }
+    
+    public Optional<Usuario> buscarPorId(String id) {
+        return usuarioRepository.findById(id);
+    }
+
+    @Transactional
+    public Usuario atualizarUsuario(String id, Usuario usuarioAtualizado) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+        usuario.setNome(usuarioAtualizado.getNome());
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void deletarUsuario(String id) {
+        usuarioRepository.deleteById(id);
+    }
 }
