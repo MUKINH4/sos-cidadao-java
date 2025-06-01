@@ -7,8 +7,6 @@ public record UsuarioRequestDTO(
     String email, 
     String senha, 
     String confirmarSenha,
-    TipoUsuario tipo,
-    String necessidadesEspecificas, // For Abrigado
-    String habilidades // For Voluntario
+    TipoUsuario tipo
 ) {
 }

@@ -1,6 +1,8 @@
 package sos_cidadao.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import sos_cidadao.api.controller.AuthController.Token;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import sos_cidadao.api.dto.UsuarioRequestDTO;
 import sos_cidadao.api.dto.UsuarioResponseDTO;
 import sos_cidadao.api.model.Usuario;
+import sos_cidadao.api.service.TokenService;
 import sos_cidadao.api.service.UsuarioService;
 
 @RestController
@@ -29,9 +33,11 @@ import sos_cidadao.api.service.UsuarioService;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final TokenService tokenService;
 
-    public UsuarioController(UsuarioService usuarioService){
+    public UsuarioController(UsuarioService usuarioService, TokenService tokenService) {
         this.usuarioService = usuarioService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/registrar")
@@ -60,9 +66,12 @@ public class UsuarioController {
     @PutMapping("/{id}")
     @CacheEvict(value = "usuario", key = "#id")
     @Operation(tags = "Usuarios", summary = "Atualiza um usuário pelo ID")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
+    public ResponseEntity<Map<String, Token>> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
-        return ResponseEntity.ok(usuario);
+        Token novoToken = tokenService.createToken(usuario);
+        Map<String, Token> response = new HashMap<>();
+        response.put("token", novoToken);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

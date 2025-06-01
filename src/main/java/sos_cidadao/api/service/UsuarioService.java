@@ -71,12 +71,10 @@ public class UsuarioService {
             if (usuarioRequestDTO.tipo() == TipoUsuario.ABRIGADO) {
                 Abrigado abrigado = new Abrigado();
                 abrigado.setUsuario(usuario);
-                abrigado.setNecessidadesEspecificas(usuarioRequestDTO.necessidadesEspecificas());
                 abrigadoRepository.save(abrigado);
             } else if (usuarioRequestDTO.tipo() == TipoUsuario.VOLUNTARIO) {
                 Voluntario voluntario = new Voluntario();
                 voluntario.setUsuario(usuario);
-                voluntario.setHabilidades(usuarioRequestDTO.habilidades());
                 voluntario.setDisponivel(true);
                 voluntarioRepository.save(voluntario);
             }
@@ -104,6 +102,10 @@ public class UsuarioService {
     public Usuario atualizarUsuario(String id, Usuario usuarioAtualizado) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
         usuario.setNome(usuarioAtualizado.getNome());
+        usuario.setEmail(usuarioAtualizado.getEmail());
+        usuario.setSenha(usuarioAtualizado.getSenha());
+        usuario.setRole(usuarioAtualizado.getRole());
+        usuario.setTipo(usuarioAtualizado.getTipo());
         return usuarioRepository.save(usuario);
     }
 

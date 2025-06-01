@@ -25,7 +25,7 @@ public class Voluntario {
     private String habilidades;
     private boolean disponivel;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 

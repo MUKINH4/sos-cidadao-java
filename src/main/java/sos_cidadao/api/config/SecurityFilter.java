@@ -22,6 +22,7 @@ public class SecurityFilter {
      @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.POST, "/usuario/registrar").permitAll()
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()

@@ -20,8 +20,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sos_cidadao.api.model.enums.UserRole;
 import sos_cidadao.api.model.enums.TipoUsuario;
+import sos_cidadao.api.model.enums.UserRole;
 
 @Entity
 @Data
@@ -33,28 +33,24 @@ public class Usuario implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "usuario_id")
     private String id;
 
-    @NotBlank(message = "O campo nome não pode ser nulo")
-    @Column(name = "nome", nullable = false)
-    private String nome;
-
     @NotBlank(message = "O campo email não pode ser nulo")
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "O campo senha não pode ser nulo")
-    @Column(name = "senha", nullable = false)
     private String senha;
+
+    @NotBlank(message = "O campo nome não pode ser nulo")
+    private String nome;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
     private UserRole role = UserRole.USER;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_usuario", nullable = false)
+    @Column(name = "tipo_usuario")
     private TipoUsuario tipo;
 
     @Override
