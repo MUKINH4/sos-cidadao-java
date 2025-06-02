@@ -18,17 +18,23 @@ public class SecurityFilter {
 
     @Autowired
     private AuthFilter authFilter;
+
+    private static final String[] SWAGGER_WHITELIST = {
+        "/swagger-ui.html/**", 
+        "/swagger-ui/**", 
+        "/swagger-ui/index.html**/**",
+        "/swagger-ui/index.html#**/**",
+        "/v3/api-docs/**",
+    };
     
-     @Bean
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.POST, "/usuario/registrar").permitAll()
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
-                    .requestMatchers("/swagger-ui.html").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**").permitAll()
+                    .requestMatchers(SWAGGER_WHITELIST).permitAll()
                     .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())

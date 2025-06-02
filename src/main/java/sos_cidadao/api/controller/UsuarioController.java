@@ -42,7 +42,7 @@ public class UsuarioController {
 
     @PostMapping("/registrar")
     @ResponseStatus(code = HttpStatus.CREATED)
-    @Operation(tags = "Usuarios", summary = "Cria um usuário")
+    @Operation(tags = "Usuários", summary = "Cria um usuário")
     public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody @Valid UsuarioRequestDTO usuarioRequest){
         var usuarioResponse = usuarioService.registrarUsuario(usuarioRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResponse);
@@ -50,7 +50,7 @@ public class UsuarioController {
 
     @GetMapping
     @Cacheable("usuarios")
-    @Operation(tags = "Usuarios", summary = "Lista todos os usuários")
+    @Operation(tags = "Usuários", summary = "Lista todos os usuários")
     public ResponseEntity<List<Usuario>> listarTodos() {
         List<Usuario> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.ok(usuarios);
@@ -58,14 +58,14 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @Cacheable(value = "usuario", key = "#id")
-    @Operation(tags = "Usuarios", summary = "Busca um usuário pelo ID")
+    @Operation(tags = "Usuários", summary = "Busca um usuário pelo ID")
     public ResponseEntity<Optional<Usuario>> buscarPorId(@PathVariable String id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     @CacheEvict(value = "usuario", key = "#id")
-    @Operation(tags = "Usuarios", summary = "Atualiza um usuário pelo ID")
+    @Operation(tags = "Usuários", summary = "Atualiza um usuário pelo ID")
     public ResponseEntity<Map<String, Token>> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
         Token novoToken = tokenService.createToken(usuario);
@@ -76,7 +76,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @CacheEvict(value = "usuario", key = "#id")
-    @Operation(tags = "Usuarios", summary = "Deleta um usuário pelo ID")
+    @Operation(tags = "Usuários", summary = "Deleta um usuário pelo ID")
     public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();

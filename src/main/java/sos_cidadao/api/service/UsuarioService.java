@@ -103,9 +103,11 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
         usuario.setNome(usuarioAtualizado.getNome());
         usuario.setEmail(usuarioAtualizado.getEmail());
-        usuario.setSenha(usuarioAtualizado.getSenha());
+        usuario.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
         usuario.setRole(usuarioAtualizado.getRole());
         usuario.setTipo(usuarioAtualizado.getTipo());
+        System.out.println("Atualizando usuário: " + usuario);
+        System.out.println(usuarioAtualizado.getSenha());
         return usuarioRepository.save(usuario);
     }
 

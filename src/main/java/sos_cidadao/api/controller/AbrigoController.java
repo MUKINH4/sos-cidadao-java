@@ -24,7 +24,7 @@ public class AbrigoController {
     private AbrigoService abrigoService;
 
     @PostMapping
-    @Operation(summary = "Criar um novo abrigo", description = "Endpoint para criar um novo abrigo")
+    @Operation(tags = "Abrigos", summary = "Criar um novo abrigo", description = "Endpoint para criar um novo abrigo")
     public ResponseEntity<Abrigo> criarAbrigo(@RequestBody @Valid Abrigo abrigo) {
         Abrigo novoAbrigo = abrigoService.criarAbrigo(abrigo);
         return ResponseEntity.ok(novoAbrigo);
@@ -32,7 +32,7 @@ public class AbrigoController {
 
     @GetMapping
     @Cacheable("abrigos")
-    @Operation(summary = "Listar todos os abrigos", description = "Endpoint para listar todos os abrigos")
+    @Operation(tags = "Abrigos", summary = "Listar todos os abrigos", description = "Endpoint para listar todos os abrigos")
     public ResponseEntity<List<Abrigo>> listarTodos() {
         List<Abrigo> abrigos = abrigoService.listarTodos();
         return ResponseEntity.ok(abrigos);
@@ -40,7 +40,7 @@ public class AbrigoController {
 
     @GetMapping("/{id}")
     @Cacheable(value = "abrigo", key = "#id")
-    @Operation(summary = "Buscar abrigo por ID", description = "Endpoint para buscar um abrigo pelo ID")
+    @Operation(tags = "Abrigos", summary = "Buscar abrigo por ID", description = "Endpoint para buscar um abrigo pelo ID")
     public ResponseEntity<Abrigo> buscarPorId(@PathVariable Long id) {
         Optional<Abrigo> abrigo = abrigoService.buscarPorId(id);
         return abrigo.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -48,7 +48,7 @@ public class AbrigoController {
 
     @PutMapping("/{id}")
     @CacheEvict(value = "abrigo", key = "#id")
-    @Operation(summary = "Atualizar um abrigo", description = "Endpoint para atualizar um abrigo pelo ID")
+    @Operation(tags = "Abrigos", summary = "Atualizar um abrigo", description = "Endpoint para atualizar um abrigo pelo ID")
     public ResponseEntity<Abrigo> atualizarAbrigo(@PathVariable Long id, @RequestBody @Valid Abrigo abrigoAtualizado) {
         Abrigo abrigo = abrigoService.atualizarAbrigo(id, abrigoAtualizado);
         return ResponseEntity.ok(abrigo);
@@ -56,7 +56,7 @@ public class AbrigoController {
 
     @DeleteMapping("/{id}")
     @CacheEvict(value = "abrigo", key = "#id")
-    @Operation(summary = "Deletar um abrigo", description = "Endpoint para deletar um abrigo pelo ID")
+    @Operation(tags = "Abrigos", summary = "Deletar um abrigo", description = "Endpoint para deletar um abrigo pelo ID")
     public ResponseEntity<Void> deletarAbrigo(@PathVariable Long id) {
         abrigoService.deletarAbrigo(id);
         return ResponseEntity.noContent().build();

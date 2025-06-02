@@ -25,7 +25,7 @@ public class Abrigado {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "abrigo_id", nullable = false)
+    @JoinColumn(name = "abrigo_id", nullable = true)
     private Abrigo abrigo;
 
     private String necessidadesEspecificas;
