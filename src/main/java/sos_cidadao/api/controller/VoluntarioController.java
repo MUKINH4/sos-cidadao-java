@@ -11,12 +11,14 @@ import sos_cidadao.api.service.VoluntarioService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/voluntarios")
+@SecurityRequirement(name = "bearer")
 public class VoluntarioController {
 
     public record VoluntarioFilter(String nome){}

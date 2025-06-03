@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import sos_cidadao.api.model.Usuario;
 import sos_cidadao.api.service.TokenService;
 
@@ -25,7 +26,7 @@ public class AuthController {
     private AuthenticationManager authManager;
 
     @PostMapping("/login")
-    @Operation(tags = "Autenticação", summary = "Realiza o login do usuário", description = "Endpoint para autenticar um usuário e gerar um token JWT")
+    @Operation(security = @SecurityRequirement(name = ""), tags = "Autenticação", summary = "Realiza o login do usuário", description = "Endpoint para autenticar um usuário e gerar um token JWT")
     public Token login(@RequestBody Credentials credentials){
 
         var authentication = new UsernamePasswordAuthenticationToken(credentials.email(), credentials.senha());

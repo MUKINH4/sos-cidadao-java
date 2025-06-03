@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sos_cidadao.api.controller.AuthController.Token;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import sos_cidadao.api.dto.UsuarioRequestDTO;
 import sos_cidadao.api.dto.UsuarioResponseDTO;
@@ -50,7 +51,7 @@ public class UsuarioController {
 
     @GetMapping
     @Cacheable("usuarios")
-    @Operation(tags = "Usuários", summary = "Lista todos os usuários")
+    @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Lista todos os usuários")
     public ResponseEntity<List<Usuario>> listarTodos() {
         List<Usuario> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.ok(usuarios);
@@ -58,14 +59,14 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @Cacheable(value = "usuario", key = "#id")
-    @Operation(tags = "Usuários", summary = "Busca um usuário pelo ID")
+    @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Busca um usuário pelo ID")
     public ResponseEntity<Optional<Usuario>> buscarPorId(@PathVariable String id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     @CacheEvict(value = "usuario", key = "#id")
-    @Operation(tags = "Usuários", summary = "Atualiza um usuário pelo ID")
+    @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Atualiza um usuário pelo ID")
     public ResponseEntity<Map<String, Token>> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
         Token novoToken = tokenService.createToken(usuario);
@@ -76,7 +77,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @CacheEvict(value = "usuario", key = "#id")
-    @Operation(tags = "Usuários", summary = "Deleta um usuário pelo ID")
+    @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Deleta um usuário pelo ID")
     public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();

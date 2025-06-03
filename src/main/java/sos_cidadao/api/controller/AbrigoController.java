@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import sos_cidadao.api.model.Abrigo;
 import sos_cidadao.api.service.AbrigoService;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/abrigos")
+@SecurityRequirement(name = "bearer")
 public class AbrigoController {
 
     public record AbrigoFilter(String nome){}

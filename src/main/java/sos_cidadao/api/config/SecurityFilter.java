@@ -13,8 +13,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.OpenAPI;
+
 @Configuration
+@SecurityScheme(
+    bearerFormat = "JWT",
+    name = "bearer",
+    scheme = "bearer",
+    type = SecuritySchemeType.HTTP,
+    in = SecuritySchemeIn.HEADER
+)
 public class SecurityFilter {
+
+
 
     @Autowired
     private AuthFilter authFilter;
@@ -22,8 +36,6 @@ public class SecurityFilter {
     private static final String[] SWAGGER_WHITELIST = {
         "/swagger-ui.html/**", 
         "/swagger-ui/**", 
-        "/swagger-ui/index.html**/**",
-        "/swagger-ui/index.html#**/**",
         "/v3/api-docs/**",
     };
     
@@ -51,5 +63,11 @@ public class SecurityFilter {
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public OpenAPI openApi(){
+        return new OpenAPI();
+        
     }
 }
