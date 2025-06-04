@@ -7,10 +7,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import sos_cidadao.api.model.Abrigo;
+import sos_cidadao.api.model.Endereco;
 import sos_cidadao.api.model.Usuario;
 import sos_cidadao.api.model.Voluntario;
 import sos_cidadao.api.model.enums.TipoUsuario;
 import sos_cidadao.api.model.enums.UserRole;
+import sos_cidadao.api.repository.AbrigoRepository;
+import sos_cidadao.api.repository.EnderecoRepository;
 import sos_cidadao.api.repository.UsuarioRepository;
 import sos_cidadao.api.repository.VoluntarioRepository;
 
@@ -20,6 +24,8 @@ public class DatabaseSeeder {
     @Autowired UsuarioRepository usuarioRepository;
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired VoluntarioRepository voluntarioRepository;
+    @Autowired AbrigoRepository abrigoRepository;
+    @Autowired EnderecoRepository enderecoRepository;
 
     @PostConstruct
     public void init(){
@@ -65,6 +71,24 @@ public class DatabaseSeeder {
             );
 
         voluntarioRepository.saveAll(voluntarios);
+
+        var abrigos = List.of(
+            Abrigo.builder()
+                .endereco(Endereco.builder()
+                    .bairro("Jardim")
+                    .cep("18238-10")
+                    .cidade("São Paulo")    
+                    .estado("SP")
+                    .numero(12)
+                    .rua("Rua boa")
+                    .pais("Brasil")
+                    .build())
+                .lotacao(100)
+                .nome("Lar do Amor")
+                .build()
+            );
+
+        abrigoRepository.saveAll(abrigos);
 
 }
 }
