@@ -66,7 +66,7 @@ public class SecurityFilter {
     }
 
     @Bean
-    public OpenAPI openApi(){
+    OpenAPI openApi(){
         return new OpenAPI();
         
     }

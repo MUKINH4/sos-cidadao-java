@@ -37,6 +37,9 @@ public class AbrigadoService {
 
     @Transactional
     public void deletarAbrigado(String id) {
+        if (!abrigadoRepository.existsById(id)) {
+            throw new RuntimeException("Abrigado não encontrado");
+        }
         abrigadoRepository.deleteById(id);
     }
 }

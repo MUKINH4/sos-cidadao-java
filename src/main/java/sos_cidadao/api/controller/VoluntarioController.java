@@ -59,7 +59,7 @@ public class VoluntarioController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "voluntarios", allEntries = true)
+    @CacheEvict(value = {"voluntarios", "usuarios"}, allEntries = true)
     @Operation(tags = "Voluntários", summary = "Deletar um voluntário", description = "Endpoint para deletar um voluntário pelo ID")
     public ResponseEntity<Void> deletarVoluntario(@PathVariable String id) {
         voluntarioService.deletarVoluntario(id);

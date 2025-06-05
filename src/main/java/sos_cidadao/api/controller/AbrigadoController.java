@@ -49,7 +49,7 @@ public class AbrigadoController {
     }
 
     @GetMapping("/{id}")
-    @Cacheable(value = "abrigado", key = "#id")
+    @Cacheable(value = "abrigados")
     @Operation(tags = "Abrigados", summary = "Buscar abrigado por ID", description = "Endpoint para buscar um abrigado pelo ID")
     public ResponseEntity<Abrigado> buscarPorId(@PathVariable String id) {
         Optional<Abrigado> abrigado = abrigadoService.buscarPorId(id);
@@ -65,7 +65,7 @@ public class AbrigadoController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "abrigados", allEntries = true)
+    @CacheEvict(value = {"abrigos", "abrigados"}, allEntries = true)
     @Operation(tags = "Abrigados", summary = "Deletar um abrigado", description = "Endpoint para deletar um abrigado pelo ID")
     public ResponseEntity<Void> deletarAbrigado(@PathVariable String id) {
         abrigadoService.deletarAbrigado(id);

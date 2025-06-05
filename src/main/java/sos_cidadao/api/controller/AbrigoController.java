@@ -42,7 +42,7 @@ public class AbrigoController {
     }
 
     @GetMapping("/{id}")
-    @Cacheable(value = "abrigos", key = "#id")
+    @Cacheable(value = "abrigos")
     @Operation(tags = "Abrigos", summary = "Buscar abrigo por ID", description = "Endpoint para buscar um abrigo pelo ID")
     public ResponseEntity<Abrigo> buscarPorId(@PathVariable Long id) {
         Optional<Abrigo> abrigo = abrigoService.buscarPorId(id);
