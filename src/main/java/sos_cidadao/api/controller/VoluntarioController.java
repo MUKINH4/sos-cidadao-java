@@ -43,7 +43,7 @@ public class VoluntarioController {
     }
 
     @GetMapping("/{id}")
-    @Cacheable(value = "voluntario", key = "#id")
+    @Cacheable(value = "voluntarios", key = "#id")
     @Operation(tags = "Voluntários", summary = "Buscar voluntário por ID", description = "Endpoint para buscar um voluntário pelo ID")
     public ResponseEntity<Voluntario> buscarPorId(@PathVariable String id) {
         Optional<Voluntario> voluntario = voluntarioService.buscarPorId(id);
@@ -51,7 +51,7 @@ public class VoluntarioController {
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "voluntario", allEntries = true)
+    @CacheEvict(value = "voluntarios", allEntries = true)
     @Operation(tags = "Voluntários", summary = "Atualizar um voluntário", description = "Endpoint para atualizar um voluntário pelo ID")
     public ResponseEntity<Voluntario> atualizarVoluntario(@PathVariable String id, @RequestBody @Valid Voluntario voluntarioAtualizado) {
         Voluntario voluntario = voluntarioService.atualizarVoluntario(id, voluntarioAtualizado);
@@ -59,7 +59,7 @@ public class VoluntarioController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "voluntario", allEntries = true)
+    @CacheEvict(value = "voluntarios", allEntries = true)
     @Operation(tags = "Voluntários", summary = "Deletar um voluntário", description = "Endpoint para deletar um voluntário pelo ID")
     public ResponseEntity<Void> deletarVoluntario(@PathVariable String id) {
         voluntarioService.deletarVoluntario(id);

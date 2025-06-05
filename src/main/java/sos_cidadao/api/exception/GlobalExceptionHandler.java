@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ErrorResponse.of(message, 409));
         };
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ErrorResponse.of("Erro interno do servidor: " + ex.getMessage(), 500));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse.of("Erro: " + ex.getMessage(), 400));
     }
 }

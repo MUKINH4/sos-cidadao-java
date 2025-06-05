@@ -59,14 +59,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @Cacheable(value = "usuario", key = "#id")
+    @Cacheable(value = "usuarios", key = "#id")
     @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Busca um usuário pelo ID")
     public ResponseEntity<Optional<Usuario>> buscarPorId(@PathVariable String id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "usuario", allEntries = true)
+    @CacheEvict(value = "usuarios", allEntries = true)
     @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Atualiza um usuário pelo ID")
     public ResponseEntity<Map<String, Token>> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
@@ -77,7 +77,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "usuario", allEntries = true)
+    @CacheEvict(value = "usuarios", allEntries = true)
     @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Deleta um usuário pelo ID")
     public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
         usuarioService.deletarUsuario(id);

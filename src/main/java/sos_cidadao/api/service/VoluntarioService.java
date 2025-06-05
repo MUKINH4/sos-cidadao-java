@@ -32,6 +32,8 @@ public class VoluntarioService {
     public Voluntario atualizarVoluntario(String id, Voluntario voluntarioAtualizado) {
         Voluntario voluntario = voluntarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Voluntario não encontrado"));
         voluntario.setHabilidades(voluntarioAtualizado.getHabilidades());
+        voluntario.setDisponivel(voluntarioAtualizado.isDisponivel()); // Atualiza para false
+
         return voluntarioRepository.save(voluntario);
     }
 

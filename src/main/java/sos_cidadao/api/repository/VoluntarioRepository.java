@@ -7,4 +7,5 @@ import sos_cidadao.api.model.Voluntario;
 
 @Repository
 public interface VoluntarioRepository extends JpaRepository<Voluntario, String>, JpaSpecificationExecutor<String> {
+    Voluntario findByUsuarioId(String usuarioId);
 }

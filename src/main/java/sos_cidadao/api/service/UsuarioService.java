@@ -103,6 +103,12 @@ public class UsuarioService {
     }
     
     public Optional<Usuario> buscarPorId(String id) {
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("O ID do usuário não pode ser nulo ou vazio");
+        }
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuario não encontrado");
+        }
         return usuarioRepository.findById(id);
     }
 
@@ -121,6 +127,13 @@ public class UsuarioService {
 
     @Transactional
     public void deletarUsuario(String id) {
+        Voluntario voluntario = voluntarioRepository.findByUsuarioId(id);
+        if (voluntario != null) {
+            voluntarioRepository.delete(voluntario);
+        }
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuario não encontrado");
+        }
         usuarioRepository.deleteById(id);
     }
 }
