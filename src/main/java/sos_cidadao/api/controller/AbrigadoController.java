@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +34,12 @@ public class AbrigadoController {
     private AbrigadoService abrigadoService;
 
     @PostMapping
-    @CacheEvict(value = "abrigados", allEntries = true)
+    @CacheEvict(value = {"abrigados", "abrigos"}, allEntries = true)
     @Operation(tags = "Abrigados", summary = "Criar um novo abrigado", description = "Endpoint para criar um novo abrigado")
     public ResponseEntity<Abrigado> criarAbrigado(@RequestBody @Valid Abrigado abrigado) {
+        System.out.println("abrigo: " + abrigado.getAbrigo());
         Abrigado novoAbrigado = abrigadoService.criarAbrigado(abrigado);
-        return ResponseEntity.ok(novoAbrigado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoAbrigado);
     }
 
     @GetMapping

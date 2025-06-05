@@ -27,7 +27,7 @@ public class VoluntarioController {
     private VoluntarioService voluntarioService;
 
     @PostMapping
-    @CacheEvict(value = "voluntarios", allEntries = true)
+    @CacheEvict(value = {"voluntarios", "usuarios"}, allEntries = true)
     @Operation(tags = "Voluntários", summary = "Criar um novo voluntário", description = "Endpoint para criar um novo voluntário")
     public ResponseEntity<Voluntario> criarVoluntario(@RequestBody @Valid Voluntario voluntario) {
         Voluntario novoVoluntario = voluntarioService.criarVoluntario(voluntario);

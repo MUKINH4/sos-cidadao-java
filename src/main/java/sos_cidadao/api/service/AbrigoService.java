@@ -34,6 +34,8 @@ public class AbrigoService {
         Abrigo abrigo = abrigoRepository.findById(id).orElseThrow(() -> new RuntimeException("Abrigo não encontrado"));
         abrigo.setNome(abrigoAtualizado.getNome());
         abrigo.setEndereco(abrigoAtualizado.getEndereco());
+        abrigo.setLotacao(abrigoAtualizado.getLotacao());
+        abrigo.setEndereco(abrigoAtualizado.getEndereco());
         return abrigoRepository.save(abrigo);
     }
 

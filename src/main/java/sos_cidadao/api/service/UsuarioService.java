@@ -72,7 +72,6 @@ public class UsuarioService {
 
             if (usuarioRequestDTO.tipo() == TipoUsuario.ABRIGADO) {
                 Abrigado abrigado = new Abrigado();
-                abrigado.setUsuario(usuario);
                 abrigadoRepository.save(abrigado);
             } else if (usuarioRequestDTO.tipo() == TipoUsuario.VOLUNTARIO) {
                 Voluntario voluntario = new Voluntario();

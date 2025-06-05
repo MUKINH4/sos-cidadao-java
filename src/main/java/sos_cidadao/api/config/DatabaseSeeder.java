@@ -87,13 +87,7 @@ public class DatabaseSeeder {
 
         var abrigado = 
         Abrigado.builder()
-            .usuario(Usuario.builder()
-                .nome("Matheus")
-                .email("matheus@gmail.com")
-                .senha(passwordEncoder.encode("123"))
-                .tipo(TipoUsuario.ABRIGADO)
-                .role(UserRole.USER)
-                .build())
+            .nome("Matheus")
             .abrigo(Abrigo.builder()
                 .endereco(Endereco.builder()
                     .bairro("Jardim bebe")
