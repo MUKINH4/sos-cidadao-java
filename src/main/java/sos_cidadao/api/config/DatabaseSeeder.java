@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import lombok.experimental.var;
 import sos_cidadao.api.model.Abrigado;
 import sos_cidadao.api.model.Abrigo;
 import sos_cidadao.api.model.Endereco;
