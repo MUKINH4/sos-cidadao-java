@@ -7,14 +7,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import lombok.experimental.var;
+import sos_cidadao.api.model.Abrigado;
 import sos_cidadao.api.model.Abrigo;
 import sos_cidadao.api.model.Endereco;
 import sos_cidadao.api.model.Usuario;
 import sos_cidadao.api.model.Voluntario;
 import sos_cidadao.api.model.enums.TipoUsuario;
 import sos_cidadao.api.model.enums.UserRole;
+import sos_cidadao.api.repository.AbrigadoRepository;
 import sos_cidadao.api.repository.AbrigoRepository;
-import sos_cidadao.api.repository.EnderecoRepository;
 import sos_cidadao.api.repository.UsuarioRepository;
 import sos_cidadao.api.repository.VoluntarioRepository;
 
@@ -25,7 +27,7 @@ public class DatabaseSeeder {
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired VoluntarioRepository voluntarioRepository;
     @Autowired AbrigoRepository abrigoRepository;
-    @Autowired EnderecoRepository enderecoRepository;
+    @Autowired AbrigadoRepository abrigadoRepository;
 
     @PostConstruct
     public void init(){
@@ -44,15 +46,9 @@ public class DatabaseSeeder {
                 .senha(passwordEncoder.encode("123"))
                 .tipo(TipoUsuario.VOLUNTARIO)
                 .role(UserRole.ADMIN)
-                .build(),
-
-            Usuario.builder()
-                .nome("Matheus")
-                .email("matheus@gmail.com")
-                .senha(passwordEncoder.encode("123"))
-                .tipo(TipoUsuario.ABRIGADO)
-                .role(UserRole.ADMIN)
                 .build()
+
+
         );
         usuarioRepository.saveAll(usuarios);
 
@@ -90,5 +86,34 @@ public class DatabaseSeeder {
 
         abrigoRepository.saveAll(abrigos);
 
-}
+        var abrigado = 
+        Abrigado.builder()
+            .usuario(Usuario.builder()
+                .nome("Matheus")
+                .email("matheus@gmail.com")
+                .senha(passwordEncoder.encode("123"))
+                .tipo(TipoUsuario.ABRIGADO)
+                .role(UserRole.USER)
+                .build())
+            .abrigo(Abrigo.builder()
+                .endereco(Endereco.builder()
+                    .bairro("Jardim bebe")
+                    .cep("31232-100")
+                    .cidade("São Paulo")    
+                    .estado("SP")
+                    .numero(69)
+                    .rua("Rua dos Anjos")
+                    .pais("Brasil")
+                    .build())
+                .lotacao(100)
+                .nome("Lar da Esperança")
+                .build())
+            .necessidadesEspecificas("Fome")
+            .idade(10)
+            .sexo("Masculino")
+            .build();
+        abrigadoRepository.save(abrigado);
+
+
+    }
 }

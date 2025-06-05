@@ -27,6 +27,7 @@ public class VoluntarioController {
     private VoluntarioService voluntarioService;
 
     @PostMapping
+    @CacheEvict(value = "voluntarios", allEntries = true)
     @Operation(tags = "Voluntários", summary = "Criar um novo voluntário", description = "Endpoint para criar um novo voluntário")
     public ResponseEntity<Voluntario> criarVoluntario(@RequestBody @Valid Voluntario voluntario) {
         Voluntario novoVoluntario = voluntarioService.criarVoluntario(voluntario);
@@ -50,7 +51,7 @@ public class VoluntarioController {
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "voluntario", key = "#id")
+    @CacheEvict(value = "voluntario", allEntries = true)
     @Operation(tags = "Voluntários", summary = "Atualizar um voluntário", description = "Endpoint para atualizar um voluntário pelo ID")
     public ResponseEntity<Voluntario> atualizarVoluntario(@PathVariable String id, @RequestBody @Valid Voluntario voluntarioAtualizado) {
         Voluntario voluntario = voluntarioService.atualizarVoluntario(id, voluntarioAtualizado);
@@ -58,7 +59,7 @@ public class VoluntarioController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "voluntario", key = "#id")
+    @CacheEvict(value = "voluntario", allEntries = true)
     @Operation(tags = "Voluntários", summary = "Deletar um voluntário", description = "Endpoint para deletar um voluntário pelo ID")
     public ResponseEntity<Void> deletarVoluntario(@PathVariable String id) {
         voluntarioService.deletarVoluntario(id);

@@ -26,6 +26,7 @@ public class AbrigoController {
     private AbrigoService abrigoService;
 
     @PostMapping
+    @CacheEvict(value = "abrigos", allEntries = true)
     @Operation(tags = "Abrigos", summary = "Criar um novo abrigo", description = "Endpoint para criar um novo abrigo")
     public ResponseEntity<Abrigo> criarAbrigo(@RequestBody @Valid Abrigo abrigo) {
         Abrigo novoAbrigo = abrigoService.criarAbrigo(abrigo);
@@ -41,7 +42,7 @@ public class AbrigoController {
     }
 
     @GetMapping("/{id}")
-    @Cacheable(value = "abrigo", key = "#id")
+    @Cacheable(value = "abrigos", key = "#id")
     @Operation(tags = "Abrigos", summary = "Buscar abrigo por ID", description = "Endpoint para buscar um abrigo pelo ID")
     public ResponseEntity<Abrigo> buscarPorId(@PathVariable Long id) {
         Optional<Abrigo> abrigo = abrigoService.buscarPorId(id);
@@ -49,7 +50,7 @@ public class AbrigoController {
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "abrigo", key = "#id")
+    @CacheEvict(value = "abrigos", allEntries = true)
     @Operation(tags = "Abrigos", summary = "Atualizar um abrigo", description = "Endpoint para atualizar um abrigo pelo ID")
     public ResponseEntity<Abrigo> atualizarAbrigo(@PathVariable Long id, @RequestBody @Valid Abrigo abrigoAtualizado) {
         Abrigo abrigo = abrigoService.atualizarAbrigo(id, abrigoAtualizado);
@@ -57,7 +58,7 @@ public class AbrigoController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "abrigo", key = "#id")
+    @CacheEvict(value = "abrigos", allEntries = true)
     @Operation(tags = "Abrigos", summary = "Deletar um abrigo", description = "Endpoint para deletar um abrigo pelo ID")
     public ResponseEntity<Void> deletarAbrigo(@PathVariable Long id) {
         abrigoService.deletarAbrigo(id);

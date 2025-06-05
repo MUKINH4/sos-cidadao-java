@@ -3,7 +3,9 @@ package sos_cidadao.api.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,6 +87,12 @@ public class UsuarioService {
                 usuarioSalvo.getEmail(),
                 usuarioSalvo.getRole()
             );
+        } catch (DataIntegrityViolationException e) {
+            Throwable cause = e.getMostSpecificCause();
+            if (cause instanceof ConstraintViolationException) {
+                throw (ConstraintViolationException) cause;
+            }
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao registrar o usuário: " + e.getMessage(), e);
         }

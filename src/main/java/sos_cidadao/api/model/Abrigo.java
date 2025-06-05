@@ -32,7 +32,7 @@ public class Abrigo {
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "abrigo")
+    @OneToMany(mappedBy = "abrigo", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Abrigado> abrigados;
 
     private int lotacao;

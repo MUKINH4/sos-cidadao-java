@@ -43,6 +43,7 @@ public class UsuarioController {
 
     @PostMapping("/registrar")
     @ResponseStatus(code = HttpStatus.CREATED)
+    @CacheEvict(value = "usuarios", allEntries = true)
     @Operation(tags = "Usuários", summary = "Cria um usuário")
     public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody @Valid UsuarioRequestDTO usuarioRequest){
         var usuarioResponse = usuarioService.registrarUsuario(usuarioRequest);
@@ -65,7 +66,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "usuario", key = "#id")
+    @CacheEvict(value = "usuario", allEntries = true)
     @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Atualiza um usuário pelo ID")
     public ResponseEntity<Map<String, Token>> atualizarUsuario(@PathVariable String id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
@@ -76,7 +77,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "usuario", key = "#id")
+    @CacheEvict(value = "usuario", allEntries = true)
     @Operation(security = @SecurityRequirement(name = "bearer"), tags = "Usuários", summary = "Deleta um usuário pelo ID")
     public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
         usuarioService.deletarUsuario(id);

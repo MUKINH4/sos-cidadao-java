@@ -1,8 +1,7 @@
 package sos_cidadao.api.service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Service;
 
@@ -17,17 +16,18 @@ import sos_cidadao.api.model.enums.UserRole;
 @Service
 public class TokenService {
 
-    Instant expiresAt = LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.ofHours(-3));
-
     Algorithm algorithm = Algorithm.HMAC256("secret123");
 
     public Token createToken(Usuario usuario){
+        Instant now = Instant.now();
+        Instant expiresAt = now.plus(1, ChronoUnit.HOURS);
         var jwt = JWT.create()
             .withSubject(usuario.getId())
             .withClaim("email", usuario.getEmail())
             .withClaim("role", usuario.getRole().toString())
             .withClaim("tipo", usuario.getTipo().toString())
-            .withClaim("nome", usuario.getNome().toString())
+            .withClaim("nome", usuario.getNome())
+            .withIssuedAt(now)
             .withExpiresAt(expiresAt)
             .sign(algorithm);
 

@@ -33,7 +33,7 @@ public class AbrigadoController {
     private AbrigadoService abrigadoService;
 
     @PostMapping
-    @CacheEvict(value = "abrigados", key = "#id")
+    @CacheEvict(value = "abrigados", allEntries = true)
     @Operation(tags = "Abrigados", summary = "Criar um novo abrigado", description = "Endpoint para criar um novo abrigado")
     public ResponseEntity<Abrigado> criarAbrigado(@RequestBody @Valid Abrigado abrigado) {
         Abrigado novoAbrigado = abrigadoService.criarAbrigado(abrigado);
@@ -57,7 +57,7 @@ public class AbrigadoController {
     }
 
     @PutMapping("/{id}")
-    @CacheEvict(value = "abrigados", key = "#id")
+    @CacheEvict(value = "abrigados", allEntries = true)
     @Operation(tags = "Abrigados", summary = "Atualizar um abrigado", description = "Endpoint para atualizar um abrigado pelo ID")
     public ResponseEntity<Abrigado> atualizarAbrigado(@PathVariable String id, @RequestBody @Valid Abrigado abrigadoAtualizado) {
         Abrigado abrigado = abrigadoService.atualizarAbrigado(id, abrigadoAtualizado);
@@ -65,7 +65,7 @@ public class AbrigadoController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "abrigados", key = "#id")
+    @CacheEvict(value = "abrigados", allEntries = true)
     @Operation(tags = "Abrigados", summary = "Deletar um abrigado", description = "Endpoint para deletar um abrigado pelo ID")
     public ResponseEntity<Void> deletarAbrigado(@PathVariable String id) {
         abrigadoService.deletarAbrigado(id);

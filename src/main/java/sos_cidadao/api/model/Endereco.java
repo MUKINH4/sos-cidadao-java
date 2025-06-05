@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "enderecos")
+@Table(name = "endereco")
 @Data
 @Builder
 @AllArgsConstructor
@@ -49,5 +49,6 @@ public class Endereco {
     private String pais;
 
     @NotBlank(message = "Bairro não pode ser nulo")
+    @Column(name = "bairro", nullable = false)
     private String bairro;
 }
