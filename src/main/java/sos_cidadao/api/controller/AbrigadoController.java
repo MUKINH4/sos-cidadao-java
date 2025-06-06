@@ -1,7 +1,6 @@
 package sos_cidadao.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import sos_cidadao.api.model.Abrigado;
+import sos_cidadao.api.dto.AbrigadoDTO;
 import sos_cidadao.api.service.AbrigadoService;
 
 @RestController
@@ -36,34 +35,34 @@ public class AbrigadoController {
     @PostMapping
     @CacheEvict(value = {"abrigados", "abrigos"}, allEntries = true)
     @Operation(tags = "Abrigados", summary = "Criar um novo abrigado", description = "Endpoint para criar um novo abrigado")
-    public ResponseEntity<Abrigado> criarAbrigado(@RequestBody @Valid Abrigado abrigado) {
-        System.out.println("abrigo: " + abrigado.getAbrigo());
-        Abrigado novoAbrigado = abrigadoService.criarAbrigado(abrigado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoAbrigado);
+    public ResponseEntity<AbrigadoDTO> criarAbrigado(@RequestBody @Valid AbrigadoDTO dto) {
+        AbrigadoDTO created = abrigadoService.criarAbrigado(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping
     @Cacheable("abrigados")
     @Operation(tags = "Abrigados", summary = "Listar todos os abrigados", description = "Endpoint para listar todos os abrigados")
-    public ResponseEntity<List<Abrigado>> listarTodos() {
-        List<Abrigado> abrigados = abrigadoService.listarTodos();
-        return ResponseEntity.ok(abrigados);
+    public ResponseEntity<List<AbrigadoDTO>> listarTodos() {
+        List<AbrigadoDTO> dtos = abrigadoService.listarTodosDtos();
+        return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}"})
     @Cacheable(value = "abrigados")
     @Operation(tags = "Abrigados", summary = "Buscar abrigado por ID", description = "Endpoint para buscar um abrigado pelo ID")
-    public ResponseEntity<Abrigado> buscarPorId(@PathVariable String id) {
-        Optional<Abrigado> abrigado = abrigadoService.buscarPorId(id);
-        return abrigado.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AbrigadoDTO> buscarPorId(@PathVariable String id) {
+        return abrigadoService.buscarDtoPorId(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     @CacheEvict(value = "abrigados", allEntries = true)
     @Operation(tags = "Abrigados", summary = "Atualizar um abrigado", description = "Endpoint para atualizar um abrigado pelo ID")
-    public ResponseEntity<Abrigado> atualizarAbrigado(@PathVariable String id, @RequestBody @Valid Abrigado abrigadoAtualizado) {
-        Abrigado abrigado = abrigadoService.atualizarAbrigado(id, abrigadoAtualizado);
-        return ResponseEntity.ok(abrigado);
+    public ResponseEntity<AbrigadoDTO> atualizarAbrigado(@PathVariable String id, @RequestBody @Valid AbrigadoDTO dto) {
+        AbrigadoDTO updated = abrigadoService.atualizarAbrigado(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

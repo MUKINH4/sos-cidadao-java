@@ -40,16 +40,21 @@ A proposta do sistema busca mitigar os impactos de eventos extremos utilizando t
 ## :test_tube: Testes e Demonstração
 
 1. Link do Deploy Online no Render:
-* :link:: [sos-cidadao-java.onrender.com](https://sos-cidadao-java.onrender.com)
+* :link: [sos-cidadao-java.onrender.com](https://sos-cidadao-java.onrender.com)
 
 2. Com Docker localmente:
 - Para rodar dessa maneira é necessário ter o Docker instalado: [docker.com](https://www.docker.com/get-started/)
 ```bash
 docker compose up --build
 ```
+3. Depois de rodar o projeto o Swagger estará disponível no link abaixo:
 
+- :link: http://localhost:8080/swagger-ui.html
 
-* :video_camera: Vídeo com demonstração: https://youtu.be/o2Nn54idX6E
-* :microphone: Pitch explicativo: \[inserir aqui]
+## Vídeos
+
+* :video_camera: Vídeo com demonstração - DevOps: [Demonstração com Uso do Docker](https://youtu.be/o2Nn54idX6E)
+* :video_camera: Vídeo com demonstração completa: [Demonstração Completa da Solução](https://youtu.be/0XoJcfAWtDU)
+* :microphone: Pitch explicativo: [Pitch SOS Cidadão](https://www.youtube.com/watch?v=yCv61KhzksM)
 
 ---

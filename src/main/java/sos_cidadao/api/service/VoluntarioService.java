@@ -1,24 +1,21 @@
 package sos_cidadao.api.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import sos_cidadao.api.dto.VoluntarioDTO;
 import sos_cidadao.api.model.Voluntario;
 import sos_cidadao.api.repository.VoluntarioRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VoluntarioService {
 
     @Autowired
     private VoluntarioRepository voluntarioRepository;
-
-    @Transactional
-    public Voluntario criarVoluntario(Voluntario voluntario) {
-        return voluntarioRepository.save(voluntario);
-    }
 
     public List<Voluntario> listarTodos() {
         return voluntarioRepository.findAll();
@@ -29,10 +26,10 @@ public class VoluntarioService {
     }
 
     @Transactional
-    public Voluntario atualizarVoluntario(String id, Voluntario voluntarioAtualizado) {
+    public Voluntario atualizarVoluntario(String id, VoluntarioDTO voluntarioAtualizado) {
         Voluntario voluntario = voluntarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Voluntario não encontrado"));
-        voluntario.setHabilidades(voluntarioAtualizado.getHabilidades());
-        voluntario.setDisponivel(voluntarioAtualizado.isDisponivel()); // Atualiza para false
+        voluntario.setHabilidades(voluntarioAtualizado.habilidades());
+        voluntario.setDisponivel(voluntarioAtualizado.disponivel()); // Atualiza para false
 
         return voluntarioRepository.save(voluntario);
     }
