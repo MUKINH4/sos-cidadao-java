@@ -44,6 +44,13 @@ A proposta do sistema busca mitigar os impactos de eventos extremos utilizando t
 
 2. Com Docker localmente:
 - Para rodar dessa maneira é necessário ter o Docker instalado: [docker.com](https://www.docker.com/get-started/)
+
+2.1. Clonar o repositório:
+```bash
+git clone https://github.com/MUKINH4/sos-cidadao-java.git
+```
+\
+    2.2. Rodar o Docker
 ```bash
 docker compose up --build
 ```
